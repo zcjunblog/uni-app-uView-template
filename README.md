@@ -1,4 +1,9 @@
 # dt-uniapp专用模板
+
+内置了Vuex,Vant Weapp和小程序更新机制,开箱即用
+
+无需再手动挂载api,tools,config,store,内嵌封装好的request请求文件,根据项目真是情况定制错误拦截机制...
+
 # 使用
 
 ## 1.安装项目模板
