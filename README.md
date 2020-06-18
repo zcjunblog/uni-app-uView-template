@@ -8,7 +8,7 @@
 
 ## 1.安装项目模板
 
-`` vue create -p dcloudio/uni-preset-vue 项目名称
+`` vue create -p dcloudio/uni-preset-vue`` 项目名称
 
 ## 2.选择自定义模板
 
