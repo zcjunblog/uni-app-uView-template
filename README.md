@@ -12,16 +12,15 @@
 
 ## 2.选择自定义模板
 
-![1](https://yanxuan.nosdn.127.net/2a8f418e2e5633228a739a58eef77cd7.png)
-<img src="https://yanxuan.nosdn.127.net/2a8f418e2e5633228a739a58eef77cd7.png" width="700" alt="note"/>
+![使用自定义模板](http://yanxuan.nosdn.127.net/2a8f418e2e5633228a739a58eef77cd7.png)
 
 ## 3.填入仓库地址
 
 模板地址即仓库地址:
 
-![](https://yanxuan.nosdn.127.net/46ea1808bbeff69a0f9fe601b878287c.png)
+![模板地址](http://yanxuan.nosdn.127.net/46ea1808bbeff69a0f9fe601b878287c.png)
 
-![](https://yanxuan.nosdn.127.net/f2322eb9f87d15eb41afc2bfcb4dffca.png)
+![填入仓库地址](http://yanxuan.nosdn.127.net/f2322eb9f87d15eb41afc2bfcb4dffca.png)
 
 ## 4.安装所需插件
 
