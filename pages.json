@@ -1,10 +1,12 @@
 {
   "pages": [
     {
-      "path": "pages/index/index",
+      "path": "pages/index/index"
+    },
+    {
+      "path": "pages/user/index",
       "style": {
-        "navigationBarTitleText": "下拉刷新示例",
-        "enablePullDownRefresh": true
+        "navigationBarTitleText": "个人中心"
       }
     }
   ],
