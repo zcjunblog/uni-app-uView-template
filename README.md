@@ -12,7 +12,8 @@
 
 ## 2.选择自定义模板
 
-![](https://yanxuan.nosdn.127.net/2a8f418e2e5633228a739a58eef77cd7.png)
+![1](https://yanxuan.nosdn.127.net/2a8f418e2e5633228a739a58eef77cd7.png)
+<img src="https://yanxuan.nosdn.127.net/2a8f418e2e5633228a739a58eef77cd7.png" width="700" alt="note"/>
 
 ## 3.填入仓库地址
 
