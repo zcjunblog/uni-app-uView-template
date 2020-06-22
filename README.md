@@ -18,9 +18,9 @@
 
 模板地址即仓库地址:
 
-![模板地址](http://yanxuan.nosdn.127.net/46ea1808bbeff69a0f9fe601b878287c.png)
+![模板地址](https://i.loli.net/2020/06/22/Sk4Tv3yEHPZX2W5.png)
 
-![填入仓库地址](http://yanxuan.nosdn.127.net/f2322eb9f87d15eb41afc2bfcb4dffca.png)
+![填入仓库地址](https://i.loli.net/2020/06/22/9rC32NhUWvujdSA.png)
 
 ## 4.安装所需插件
 
