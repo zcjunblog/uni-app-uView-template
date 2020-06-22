@@ -12,7 +12,7 @@
 
 ## 2.选择自定义模板
 
-![使用自定义模板](http://yanxuan.nosdn.127.net/2a8f418e2e5633228a739a58eef77cd7.png)
+![使用自定义模板](https://i.loli.net/2020/06/22/BaJomUEzZqPVCRA.png)
 
 ## 3.填入仓库地址
 
