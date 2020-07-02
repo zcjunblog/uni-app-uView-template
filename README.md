@@ -24,11 +24,11 @@
 
 ## 4.安装所需插件
 
-```npm i sass-loader ```
+```npm install sass-loader node-sass --save-dev ```
 
 ```
-node-sass被墙解决方法:
-npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+如若出现node-sass被墙无法安装,解决方法:
+npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/ --save-dev
 ```
 
 ## 5.运行、发布uni-app
