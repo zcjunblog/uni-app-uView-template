@@ -2,14 +2,19 @@ import api from '@/api'
 import store from '@/stores'
 import appConfig from '@/utils/appConfig'
 
-const localStorageNames = [ 'user'] // Object
-const localStorageNamesArray = ['rules'] // Array 用来解决小程序热启动vuex储存值丢失的问题
+const localStorageNames = ['user', 'tokens', 'enumDict', 'configuration', 'customerUserInfo'] // Object格式
+const loginPageUrl = '/pages/login/index'
 
 const tools = {
     jump: (url) => {
-        url && wx.navigateTo({
+        url && uni.navigateTo({
             url: url
         })
+    },
+
+    userClickToLogin() {
+        // 用户点击去登录可保留refresh token
+        this.jump(`${loginPageUrl}`)
     },
 
     alertNeedLogin() {
@@ -25,41 +30,72 @@ const tools = {
         })
     },
 
-    toLogin(emptyTokens = false) {
-        const tokens = {}
-        if (!emptyTokens) {
-            // 保留refresh token
-            tokens.refresh = store.state.tokens.refresh || ''
-        }
-        // 对比上一个跳转登陆存下的时间戳 3.5秒内不再重复跳转
-        if (new Date().getTime() < wx.getStorageSync('jumpLoginTime')) {
-            tokens.refresh = ''
-            this.setStorage('tokens', tokens)
-            return //不重复跳转
-        }
-        this.setStorage('tokens', tokens)
-
-        wx.redirectTo({
-            url: loginPageUrl,
-            success: () => {
-                this.setStorage('jumpLoginTime', new Date().getTime() + 3500)
-            }
+    toLogin() {
+        // 清空tokens缓存
+        this.setStorage('tokens', {})
+        // 更新缓存值到vuex
+        this.updateStoreFromStorage()
+        // 跳转到登录页
+        uni.redirectTo({
+            url: loginPageUrl
         })
     },
 
-    isNeedToLogin() {
-        if (this.isLogin()) {
-            return false
-        } else {
-            this.userClickToLogin()
-            return true
-        }
+    isLogin() {
+        return Boolean(store.state.tokens.access)
     },
 
     goIndex() {
-        wx.switchTab({
+        uni.switchTab({
             url: '/pages/index/index' // 首页
         })
+    },
+
+    // token持久化
+    setTokens(tokens){
+        this.setStorage('tokens', {
+            access: tokens.access_token,
+            refresh: tokens.refresh_token,
+        })
+    },
+
+    // 查询用户信息
+    getMyProfile() {
+        return new Promise((resolve, reject) => {
+            api('profile.profile')
+                .then(res => {
+                    this.setStorage('user', res)
+                    resolve(res)
+                })
+                .catch(e => {
+                    console.log(e)
+                })
+        })
+    },
+
+    getConfiguration() {
+        console.log('getConfiguration调用了')
+        api('base.configuration',null,{showLoading:false})
+            .then(res => {
+                this.setStorage('configuration', res)
+            })
+            .catch(e => {
+                console.log(e)
+            })
+    },
+
+    getEnumDictionary() {
+        console.log('getAppInfo调用了')
+        // return new Promise((resolve, reject) => {
+        //     api('base.enumDictionary',null,{showLoading:false})
+        //         .then(res => {
+        //             this.setStorage('enumDict',  res)
+        //             resolve(res)
+        //         })
+        //         .catch(e => {
+        //             reject(e)
+        //         })
+        // })
     },
 
     formatLargeString: (str, maxLength) => {
@@ -111,6 +147,27 @@ const tools = {
         return newObject
     },
 
+    displayOrderSort (arr) {
+        return this.sortArrayByColumn(arr, 'displayOrder', true)
+    },
+
+    sortArrayByColumn (arr, columnName, isDesc = false) {
+        arr.sort(function (columnName, isDesc) {
+            let flag = (isDesc) ? -1 : 1
+            return function (a, b) {
+                a = a[columnName]
+                b = b[columnName]
+                if (a < b) {
+                    return flag * -1
+                }
+                if (a > b) {
+                    return flag * 1
+                }
+                return 0
+            }
+        }(columnName, isDesc))
+    },
+
     getRect(selector, all, that = wx) { // that参数：在自定义组件中，需传入this替代wx,否则拿不到dom元素
         return new Promise(resolve => {
             that.createSelectorQuery()[all ? 'selectAll' : 'select'](selector)
@@ -141,22 +198,22 @@ const tools = {
     },
 
     alert(config) {
-        wx.showModal({
+        uni.showModal({
             title: '提示',
-            confirmColor: '#49cc90',
+            confirmColor: '#4E6EF2',
             ...config
         })
     },
 
     toast(config) {
-        wx.showToast({
+        uni.showToast({
             icon: 'none',
             ...config
         })
     },
 
     existRole(roleName, data) {
-        const user = wx.getStorageSync('user')
+        const user = uni.getStorageSync('user')
         const roles = data ? data : user.roles
         return !!(roles && roles.includes(roleName));
     },
@@ -165,7 +222,7 @@ const tools = {
         if (!data && data !== 0) {
             return this.toast({title: '复制的内容不存在'})
         }
-        wx.setClipboardData({
+        uni.setClipboardData({
             data,
             success: () => {
                 this.toast({title})
@@ -175,37 +232,29 @@ const tools = {
 
     pageScrollTo(config) {
         config === 'top' && (config = {scrollTop: 0, duration: 0})
-        wx.pageScrollTo(config)
+        uni.pageScrollTo(config)
     },
 
     updateStoreFromStorage() {
         localStorageNames.forEach(dataName => {
-            const data = wx.getStorageSync(dataName)
+            const data = uni.getStorageSync(dataName)
             if (data) {
                 store.commit('setData', {dataName, data})
             } else {
                 store.commit('setData', {dataName, data: {}})
             }
         })
-        localStorageNamesArray.forEach(dataName => {
-            const data = wx.getStorageSync(dataName)
-            if (data.length > 0) {
-                store.commit('setData', {dataName, data})
-            } else {
-                store.commit('setData', {dataName, data: []})
-            }
-        })
     },
 
     checkAppEnv() {
-        const appStorageEnv = wx.getStorageSync('appEnv')
+        const appStorageEnv = uni.getStorageSync('appEnv')
         if (!appStorageEnv || appStorageEnv !== appConfig.env) {
             localStorageNames.forEach(dataName => {
                 this.setStorage(dataName, {})
             })
         }
         if (appStorageEnv !== appConfig.env) {
-            wx.setStorageSync('appEnv', appConfig.env)
+            uni.setStorageSync('appEnv', appConfig.env)
         }
     },
 
@@ -215,11 +264,11 @@ const tools = {
 
     setStorage(key, data, sync = true) {
         if (sync) {
-            wx.setStorageSync(key, data)
+            uni.setStorageSync(key, data)
             store.commit('setData', {dataName: key, data: data})
         } else {
             return new Promise((resolve, reject) => {
-                wx.setStorage({
+                uni.setStorage({
                     key,
                     data,
                     success() {
@@ -235,6 +284,12 @@ const tools = {
         }
     },
 
+    // 校验邮箱
+    checkMail(email) {
+        var reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
+        return reg.test(email)
+    },
+
     // 记录onLaunch时的path和query，防止onLaunch中调用的接口
     // 报401后重定向至登录页导致最初页面记录丢失，从而在getCurrentPages中拿不到lastPage
     recordLaunchPageUrl(launch) {
@@ -246,6 +301,36 @@ const tools = {
             dataName: 'launchPageUrl',
             data: pageUrl
         })
+    },
+
+    /**
+    *订单状态筛选
+    待上传：designModelUploadedTime 为空
+    设计中：designModelUploadedTime 不为空，且 designCompletionTime 为空
+    待验收：designCompletionTime 不为空，且 designAcceptedTime 为空
+    待支付：designAcceptedTime 不为空，且 paidTime 为空
+    待下载：paidTime 不为空，且 designModelDownloadedTime  为空
+    已完成：designModelDownloadedTime 不为空
+     */
+    orderStatus(orderData){
+        if(orderData.designModelDownloadedTime){
+            return '已完成'
+        }
+        if(orderData.paidTime){
+            return '待下载'
+        }
+        if(orderData.designAcceptedTime){
+            return '待支付'
+        }
+        if(orderData.designCompletionTime){
+            return '待验收'
+        }
+        if(orderData.designModelUploadedTime){
+            return '设计中'
+        }
+        if(!orderData.designModelUploadedTime){
+            return '待上传'
+        }
     },
 
     /**
@@ -272,6 +357,42 @@ const tools = {
     sceneConvertToGuid(str) {
         return [str.slice(0, 8), str.slice(8, 12), str.slice(12, 16), str.slice(16, 20), str.slice(20)].join('-');
     },
+
+    /**
+     * @description: 检测小程序更新的函数
+     */
+    updateApp() {
+        if (uni.canIUse('getUpdateManager')) {
+            const updateManager = uni.getUpdateManager()
+            updateManager.onCheckForUpdate((res) => {
+                // 请求完新版本信息的回调
+                if (res.hasUpdate) {
+                    updateManager.onUpdateReady(() => {
+                        this.alert({
+                            title: '更新提示',
+                            content: '新版本已经准备好，是否重启应用？',
+                            success: function (res) {
+                                if (res.confirm) {
+                                    // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+                                    updateManager.applyUpdate()
+                                }
+                            }
+                        })
+                    })
+                    updateManager.onUpdateFailed(() => {
+                        // 新的版本下载失败
+                        this.alert({
+                            title: '更新提示',
+                            content: '新版本已经上线啦！请退出小程序重新进入',
+                            showCancel: false,
+                            confirmText: '知道了'
+                        })
+                    })
+                }
+            })
+        }
+    },
+
     /**
      * 微信支付函数
      * @param {object} res 微信支付所需要的参数
@@ -324,17 +445,17 @@ const tools = {
      * @return {type} err - 查询失败的回调
      * @description:三步查询法,传入某查询函数的返回值
      */
-    reCheck(checkValue, suc, err){
+    reCheck(checkValue, suc, err) {
         let duration = 0
-        if(checkValue){ // checkValue存在或为true -> 查询成功
+        if (checkValue) { // checkValue存在或为true -> 查询成功
             suc(checkValue)
-        }else{
-            if(err){
+        } else {
+            if (err) {
                 duration += 1500  // 即0s 1.5s 3s ... 每次延长1.5s后再次查询
-                setTimeout(()=>{
+                setTimeout(() => {
                     err(duration) // duration可用来判断超时
-                },duration)
-            }else{
+                }, duration)
+            } else {
                 new Error('查询失败,无err回调!')
             }
         }

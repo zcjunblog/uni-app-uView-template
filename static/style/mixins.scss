@@ -1,0 +1,39 @@
+@mixin flex-horizon {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin _g-border {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+  right: 0;
+  transform: scaleY(0.5);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+@mixin g-bottom-border ($left: 15px, $color: #d4dde6) {
+  position: relative;
+  &::after {
+    @include _g-border;
+    left: $left;
+    bottom: 0;
+    border-bottom-color: $color;
+  }
+}
+@mixin g-top-border ($left: 15px, $color: #d4dde6) {
+  position: relative;
+  &::before {
+    @include _g-border;
+    left: $left;
+    top: 0;
+    border-bottom-color: $color;
+  }
+}

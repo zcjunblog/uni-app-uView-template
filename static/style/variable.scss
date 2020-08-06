@@ -1,24 +1,19 @@
 // 主题样式变量
-$white: #fefefe;
-$black: #2e3c49;
-$gray: #767678;
-$gray-light: #C0C0C0;
-$red: #ff5555;
-$green: #49cc90;
-$yellow: #FFC300;
-$theme: #49cc90;
-$theme-light: #68cc9f;
-$theme-dark: #2abd7b;
-$font-size: 3.6vw; // 同28rpx
+$theme: #4E6EF2; // 主题色 背景色
+$theme-light: #4E6EF2; // 文字高亮颜色
+$theme-dark: #3951B3; // 单色按钮颜色
+$font-size: 28rpx; // 默认字体大小
 
-$gradient-theme: linear-gradient($theme-light, $theme-dark);
-$gradient-theme-h: linear-gradient(90deg, $theme-dark, $theme-light);
+$gradient-theme: linear-gradient(to right, $theme-light, $theme-dark); // 左->右 由浅到深
+$gradient-theme-h: linear-gradient(to right, $theme-dark, $theme-light); // 左->右 由深到浅
 
-$border-color: rgba(#c2ced8, .8);
-$page-bg: #f7f7f7;
-$hover: #ececec;
+$border-color: #eeeeee; // 下划线 边框
+$page-bg: #f7f7f7; // 网页默认背景色
+$hover: #ececec; // 点击样式
+$gray: #656565; // 灰色图案/文字
 
-$cell-text-color: #323233;
-$cell-text-disabled: #969799;
+$cell-text-color: #323233; // 文本颜色
+$cell-text-disabled: #969799; // 禁用/不可用
+
 
 $g-footer-btn-height: 110rpx;

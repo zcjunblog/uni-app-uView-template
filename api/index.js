@@ -1,13 +1,9 @@
 import request from './http'
 import store from '@/stores'
 import appConfig from '@/utils/appConfig'
+const urls = require('./swagger.json')
 
-const urls = {
-  base: {
-    'apiName1': ['get', ''],
-    'apiName2': ['post', ''],
-  }
-}
+console.log(urls)
 
 const apiHandle = (api) => {
   const parsed = api.split('.', 2)
