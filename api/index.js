@@ -1,9 +1,14 @@
 import request from './http'
 import store from '@/stores'
 import appConfig from '@/utils/appConfig'
-const urls = require('./swagger.json')
 
-console.log(urls)
+const urls = {
+  base: {
+    'onLogin': ['post', 'api/weChatManagement/miniPrograms/login/login'],
+    'configuration': ['get', 'api/abp/application-configuration'],
+    'preUploadImage': 'api/fileManagement/file/many',
+  },
+}
 
 const apiHandle = (api) => {
   const parsed = api.split('.', 2)
@@ -34,26 +39,25 @@ const fetch = (api, params = null, config = {}) => {
   return request(method, url, params, config)
 }
 
-const uploadFile = (filePath) => {
+const uploadFile = (filePath, dailyDirectoryId) => {
   return new Promise((resolve, reject) => {
-    uni.showLoading({
-      title: '处理中',
-      mask: true
-    })
     uni.uploadFile({
-      url: appConfig.baseUrl + '图片上传接口',
+      url: appConfig.baseUrl + urls.base.preUploadImage,
       filePath,
-      name: 'images',
+      name: 'file',
       header: {
-        __tenant: store.state.curTenant.id,
+        'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${store.state.tokens.access}`
       },
+      formData: {
+        fileType: 2,
+        ParentId: dailyDirectoryId,
+        fileContainerName: 'DentureOrderRemark'
+      },
       success (res) {
-        uni.hideLoading()
         resolve(res)
       },
       fail (res) {
-        uni.hideLoading()
         reject(res)
       }
     })

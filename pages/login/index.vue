@@ -169,8 +169,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/static/style/reference.scss';
-
 page,.main{
   height: 100%;
   width: 100%;

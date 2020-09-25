@@ -40,5 +40,4 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/static/style/reference.scss';
 </style>

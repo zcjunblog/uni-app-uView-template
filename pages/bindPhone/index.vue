@@ -203,8 +203,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/static/style/reference.scss';
-
     .main {
         padding: 30rpx;
         min-height: 100vh;

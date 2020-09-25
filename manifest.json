@@ -1,6 +1,6 @@
 {
-	"name": "BrightDentistryWeapp",
-	"appid": "wxf21bdcaa5efec3ca",
+	"name": "项目名",
+	"appid": "wx3a103ad014cdbe4b",
 	"description": "",
 	"versionName": "1.0.0",
 	"versionCode": "100",
@@ -54,11 +54,11 @@
 
 	},
 	"mp-weixin": { /* 微信小程序特有相关 */
-		"appid": "wx81a4736758368fd7",
+		"appid": "wx3a103ad014cdbe4b",
 		"uniStatistics": {
 			"enable": false /*仅微信小程序关闭uni统计 */
 		},
-		"projectname": "BrightDentistryWeapp",
+		"projectname": "项目名",
 		"setting": {
 			"urlCheck": false,
 			"es6": true,

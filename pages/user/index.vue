@@ -142,7 +142,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/static/style/reference.scss';
 .main{
   height: 100%;
   width: 100%;
@@ -337,6 +336,9 @@ export default {
 }
 </style>
 <style lang="scss">
+  page{
+    height: 100%;
+  }
   .van-radio-recipient{
     margin-top: 16rpx;
   }
