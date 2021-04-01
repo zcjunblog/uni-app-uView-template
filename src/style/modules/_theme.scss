@@ -1,0 +1,23 @@
+//主题色号
+.skyBlue{
+  $theme: #87CCF4;
+  $theme-light: #94DDEE;
+  $theme-dark: #71C7E7;
+  @include theme-base($theme,$theme-light,$theme-dark)
+}
+
+//主题色号
+.dark{
+  $theme: #333333;
+  $theme-light: #414345;
+  $theme-dark: #232526;
+  @include theme-base($theme,$theme-light,$theme-dark)
+}
+
+//主题色号
+.pink{
+  $theme: #fb697e;
+  $theme-light: #fb7b83;
+  $theme-dark: #ff657a;
+  @include theme-base($theme,$theme-light,$theme-dark)
+}

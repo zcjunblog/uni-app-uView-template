@@ -1,0 +1,101 @@
+// mixin
+@mixin align-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@mixin no-touch{
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  background-color: #ececec;
+  pointer-events: none;
+}
+
+@mixin text-overflow($line: 3){
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+  overflow: hidden;
+}
+
+@mixin flex-horizon {
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin _g-border {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+  right: 0;
+  transform: scaleY(0.5);
+  border-bottom-width: 1rpx;
+  border-bottom-style: solid;
+}
+
+@mixin g-bottom-border ($left: 15px, $color: #d4dde6) {
+  position: relative;
+  &::after {
+    @include _g-border;
+    left: $left;
+    bottom: 0;
+    border-bottom-color: $color;
+  }
+  &:last-child:after{
+    content: none;
+  }
+}
+@mixin g-top-border ($left: 15px, $color: #d4dde6) {
+  position: relative;
+  &::before {
+    @include _g-border;
+    left: $left;
+    top: 0;
+    border-bottom-color: $color;
+  }
+}
+
+@mixin theme-base ($theme,$theme-light,$theme-dark){
+  $gradient-theme: linear-gradient(to right, $theme-light, $theme-dark); // 左->右 由浅到深
+  $gradient-theme-h: linear-gradient(to right, $theme-dark, $theme-light); // 左->右 由深到浅
+  .theme-bg{
+    background: $theme;
+  }
+  .theme-bg-light{
+    background: $theme-light;
+  }
+  .theme-bg-dark{
+    background: $theme-dark;
+  }
+  .theme-color{
+    color: $theme;
+  }
+  .theme-border{
+    border: 1px solid $theme!important;
+  }
+  .gradient-theme {
+    background: $gradient-theme;
+  }
+  .gradient-theme-h {
+    background: $gradient-theme-h;
+  }
+  .bgColor{ // 渐变色的u-btn
+    /deep/.u-btn--default{
+      background: $gradient-theme-h;
+      color: #fff!important;
+    }
+  }
+  .bgColor.pure{ // 纯色的u-btn
+    /deep/.u-btn--default{
+      background: $theme;
+      border: 0!important;
+      color: #fff!important;
+    }
+  }
+}
